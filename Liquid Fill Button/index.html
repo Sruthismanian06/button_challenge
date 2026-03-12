@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquid Button Challenge</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    
+/* Liquid movement animation */
+.liquid-blue {
+  transition: transform 1s ease; /* slow */
+}
+.liquid-pink {
+  transition: transform 0.4s ease; /* fast */
+}
+
+/* Hover triggers liquid fill */
+button:hover .liquid-blue,
+button:hover .liquid-pink {
+  transform: translateY(0%);
+}
+
+/* bounce animation */
+.clicked{
+  animation: scaleUp 0.3s ease forwards;
+}
+@keyframes scaleUp{
+  0%{transform: scale(1);}
+  50%{transform: scale(1.2);}
+  100%{transform: scale(1);}
+}
+</style>
+</head>
+<body class="bg-slate-900 flex flex-col items-center justify-center min-h-screen p-10 gap-6">
+
+<h1 class="text-white text-2xl font-bold mb-6 text-center">Interactive Liquid Button</h1>
+
+<h2 class="text-white text-lg mb-4 text-center">
+Which button feels more “alive”? 
+<p>Click your choice! 👇</p>
+</h2>
+
+<div class="flex gap-10 flex-col md:flex-row items-center">
+
+  <!-- Button 1 - Blue (Slow) -->
+  <button class="relative overflow-hidden px-10 py-4 text-white text-lg font-semibold border-2 border-cyan-400 rounded-lg group"
+          onclick="handleClick(this)">
+    <span class="relative z-10">Liquid Blue</span>
+    <div class="liquid-blue absolute left-0 bottom-0 w-full h-full bg-gradient-to-r from-cyan-400 to-blue-500 translate-y-full"></div>
+  </button>
+
+  <!-- Button 2 - Pink (Fast + Bounce) -->
+  <button class="relative overflow-hidden px-10 py-4 text-white text-lg font-semibold border-2 border-pink-400 rounded-lg group"
+          onclick="handleClick(this)">
+    <span class="relative z-10">Liquid Pink</span>
+    <div class="liquid-pink absolute left-0 bottom-0 w-full h-full bg-gradient-to-r from-pink-400 to-purple-500 translate-y-full"></div>
+  </button>
+</div>
+
+<script>
+function handleClick(btn){
+  // Add click animation
+  btn.classList.add('clicked');
+  setTimeout(()=> btn.classList.remove('clicked'), 300);
+}
+</script>
+
+</body>
+</html>
