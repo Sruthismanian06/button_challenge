@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Button</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+#escapeBtn{
+transition: left 0.4s ease, top 0.4s ease;
+}
+</style>
+
+</head>
+
+<body class="bg-slate-900 text-white flex flex-col items-center justify-center min-h-screen">
+
+<p class="text-sm text-gray-400 mb-2">
+Day 4 of My 7-Day Button Challenge
+</p>
+
+<h1 class="text-3xl font-bold mb-4">
+Escape Button 🏃
+</h1>
+
+<p class="text-gray-300 mb-10">
+Try to catch the button before it escapes!
+</p>
+
+<button id="escapeBtn"
+class="absolute bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-lg font-semibold">
+
+Catch Me 😄
+
+</button>
+
+<script>
+
+const btn = document.getElementById("escapeBtn");
+
+// start in center
+btn.style.left="50%";
+btn.style.top="50%";
+btn.style.transform="translate(-50%, -50%)";
+
+let canMove = true;
+
+document.addEventListener("mousemove",(e)=>{
+
+const rect = btn.getBoundingClientRect();
+
+const btnX = rect.left + rect.width/2;
+const btnY = rect.top + rect.height/2;
+
+const dist = Math.hypot(e.clientX - btnX, e.clientY - btnY);
+
+// smaller distance so it's catchable
+if(dist < 80 && canMove){
+moveButton();
+}
+
+});
+
+function moveButton(){
+
+canMove=false;
+
+const maxX = window.innerWidth - btn.offsetWidth;
+const maxY = window.innerHeight - btn.offsetHeight;
+
+const randomX = Math.random() * maxX;
+const randomY = Math.random() * maxY;
+
+btn.style.left=randomX+"px";
+btn.style.top=randomY+"px";
+
+// cooldown so user has chance
+setTimeout(()=>{
+canMove=true;
+},700);
+
+}
+
+btn.addEventListener("click",()=>{
+
+confetti({
+particleCount:120,
+spread:80,
+origin:{y:0.6}
+});
+
+alert("You caught it! 🎉");
+
+});
+
+</script>
+
+</body>
+</html>
