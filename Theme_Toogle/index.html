@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Professional Theme Toggle</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body id="body" class="bg-white text-black transition-colors duration-500 min-h-screen flex flex-col items-center justify-center gap-8">
+
+<h1 class="text-3xl font-bold">Professional Theme Toggle</h1>
+
+<p class="max-w-md text-center opacity-80">
+Click the toggle to switch between light and dark mode.
+</p>
+
+<button id="toggle"
+class="flex items-center gap-2 px-5 py-3 rounded-lg bg-gray-300 text-black hover:scale-105 transition">
+
+<span id="icon">🌙</span>
+<span id="text">Dark Mode</span>
+
+</button>
+<script>
+
+const toggle = document.getElementById("toggle");
+const body = document.getElementById("body");
+const icon = document.getElementById("icon");
+const text = document.getElementById("text");
+
+function enableDark(){
+body.classList.remove("bg-white","text-black");
+body.classList.add("bg-slate-900","text-white");
+
+toggle.classList.remove("text-black","bg-gray-300");
+toggle.classList.add("text-white","bg-slate-700");
+
+icon.textContent = "☀️";
+text.textContent = "Light Mode";
+
+localStorage.setItem("theme","dark");
+}
+
+function enableLight(){
+body.classList.remove("bg-slate-900","text-white");
+body.classList.add("bg-white","text-black");
+
+toggle.classList.remove("text-white","bg-slate-700");
+toggle.classList.add("text-black","bg-gray-300");
+
+icon.textContent = "🌙";
+text.textContent = "Dark Mode";
+
+localStorage.setItem("theme","light");
+}
+
+toggle.addEventListener("click", () => {
+
+if(localStorage.getItem("theme") === "dark"){
+enableLight();
+}else{
+enableDark();
+}
+
+});
+
+if(localStorage.getItem("theme") === "dark"){
+enableDark();
+}
+
+</script>
+
+</body>
+</html>
