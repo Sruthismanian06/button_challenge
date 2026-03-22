@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Drag to Unlock</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-900 flex items-center justify-center min-h-screen text-white">
+
+<div class="text-center">
+
+<h1 class="text-2xl font-bold mb-6">Drag to Unlock 🔓</h1>
+
+<div id="track" class="w-72 h-14 bg-slate-700 rounded-full relative overflow-hidden">
+
+<!-- Progress fill -->
+<div id="fill" class="absolute left-0 top-0 h-full bg-green-500 w-0 transition-all"></div>
+
+<!-- Slider -->
+<div id="slider"
+class="w-14 h-14 bg-white text-black rounded-full absolute left-0 top-0 flex items-center justify-center cursor-pointer font-bold">
+→
+</div>
+
+<!-- Text -->
+<div class="absolute inset-0 flex items-center justify-center text-gray-300 pointer-events-none">
+Slide to unlock
+</div>
+
+</div>
+
+<p id="status" class="mt-4 text-gray-400">Locked 🔒</p>
+
+</div>
+
+<script>
+
+const slider = document.getElementById("slider");
+const track = document.getElementById("track");
+const fill = document.getElementById("fill");
+const status = document.getElementById("status");
+
+let dragging = false;
+let unlocked = false;
+
+function getX(e){
+return e.touches ? e.touches[0].clientX : e.clientX;
+}
+
+slider.addEventListener("mousedown", start);
+slider.addEventListener("touchstart", start);
+
+function start(e){
+if(unlocked) return;
+dragging = true;
+}
+
+document.addEventListener("mousemove", move);
+document.addEventListener("touchmove", move, { passive:false });
+
+function move(e){
+if(!dragging || unlocked) return;
+
+e.preventDefault();
+
+const rect = track.getBoundingClientRect();
+let x = getX(e) - rect.left;
+
+let max = track.offsetWidth - slider.offsetWidth;
+
+if(x < 0) x = 0;
+if(x > max) x = max;
+
+slider.style.left = x + "px";
+fill.style.width = (x + slider.offsetWidth/2) + "px";
+
+// unlock
+if(x >= max){
+status.innerText = "Unlocked 🎉";
+slider.innerText = "✔";
+slider.classList.remove("bg-white");
+slider.classList.add("bg-green-500","text-white");
+unlocked = true;
+dragging = false;
+}
+}
+
+document.addEventListener("mouseup", stop);
+document.addEventListener("touchend", stop);
+
+function stop(){
+if(!dragging || unlocked) return;
+
+// reset smoothly
+slider.style.transition = "left 0.3s";
+fill.style.transition = "width 0.3s";
+
+slider.style.left = "0px";
+fill.style.width = "0px";
+
+setTimeout(()=>{
+slider.style.transition = "";
+fill.style.transition = "";
+},300);
+
+dragging = false;
+}
+
+</script>
+
+</body>
+</html>
